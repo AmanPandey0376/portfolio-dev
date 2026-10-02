@@ -113,7 +113,6 @@ export const projects: Project[] = [
     ],
     links: {
       github: "https://github.com/AmanPandey0376/Lead-Generation-Agent",
-      live: "https://lead-generation-agent-two.vercel.app/",
     },
   },
   {
