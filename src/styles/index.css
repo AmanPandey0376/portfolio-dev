@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------
+   Design tokens — change the palette here, everything follows.
+   Values are RGB channels so Tailwind can apply alpha (bg-accent/10).
+---------------------------------------------------------------- */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: 8 9 11;          /* #08090B */
+  --surface: 16 18 22;   /* #101216 */
+  --elevated: 23 26 32;  /* #171A20 */
+  --fg: 245 247 250;     /* #F5F7FA */
+  --muted: 156 163 175;  /* #9CA3AF */
+  --subtle: 112 119 132; /* #707784 */
+  --line: 255 255 255;   /* used at low alpha */
+  --accent: 124 140 255; /* #7C8CFF — electric periwinkle */
+  --accent-fg: 8 9 11;
+  --signal: 94 228 180;  /* #5EE4B4 — "live / done" states only */
+
+  --glow-strength: 0.16;
+  --grid-alpha: 0.045;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: 250 250 251;
+  --surface: 255 255 255;
+  --elevated: 244 245 247;
+  --fg: 12 14 18;
+  --muted: 82 89 102;
+  --subtle: 120 127 140;
+  --line: 12 14 18;
+  --accent: 67 85 230;   /* #4355E6 */
+  --accent-fg: 255 255 255;
+  --signal: 13 150 104;
+
+  --glow-strength: 0.1;
+  --grid-alpha: 0.06;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    font-feature-settings: "ss01", "cv11";
+    overflow-x: hidden;
+  }
+  ::selection {
+    @apply bg-accent/30 text-fg;
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  section[id] {
+    scroll-margin-top: 4.5rem;
+  }
+  img,
+  svg {
+    max-width: 100%;
+  }
+}
+
+@layer components {
+  .hairline {
+    border-color: rgb(var(--line) / 0.08);
+  }
+  .hairline-strong {
+    border-color: rgb(var(--line) / 0.14);
+  }
+  .card {
+    @apply rounded-2xl border bg-surface;
+    border-color: rgb(var(--line) / 0.08);
+  }
+  .eyebrow {
+    @apply font-mono text-2xs uppercase tracking-[0.18em] text-subtle;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-2xs text-muted;
+    border-color: rgb(var(--line) / 0.1);
+    background: rgb(var(--line) / 0.03);
+  }
+  .bg-grid {
+    background-image: linear-gradient(rgb(var(--line) / var(--grid-alpha)) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--line) / var(--grid-alpha)) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .text-gradient {
+    background: linear-gradient(180deg, rgb(var(--fg)) 30%, rgb(var(--fg) / 0.55));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Reduced motion: keep function, drop movement. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Skills: when one card is hovered, the rest soften slightly. */
+@media (hover: hover) and (pointer: fine) {
+  .skill-grid:has(.skill-card:hover) .skill-card:not(:hover) > button {
+    opacity: 0.5;
+  }
+}
